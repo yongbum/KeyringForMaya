@@ -1574,7 +1574,7 @@ def mayaMain():
 # MayaAction.py, HoudiniAction.py
 # def ImportAction():
 
-import maya.cmds as cmds
+
 
 
 
