@@ -19,8 +19,8 @@ except:
 import os
 import string
 
-mayaMainWindowPtr = omui.MQtUtil.mainWindow()
-mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget)
+#mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+#mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget)
 def getMayaWindow():
     try:
         mayaMainWindowPtr = omui.MQtUtil.mainWindow()
@@ -79,7 +79,7 @@ class randerForm(QtWidgets.QWidget):
         self.ui.pushButton_17.clicked.connect(self.pushButton_17)
         self.ui.pushButton_18.clicked.connect(self.pushButton_18)
         self.ui.pushButton_19.clicked.connect(self.pushButton_19)
-        self.ui.rad_sky.clicked.connect(self.rad_sky)
+        # self.ui.rad_sky.clicked.connect(self.rad_sky)
         self.prefixPath = ("<Scene>/<Layer>")
 
         stA = cmds.playbackOptions(q=1, min=1)
@@ -329,10 +329,6 @@ class randerForm(QtWidgets.QWidget):
         if pm.mel.unifiedRenderGlobalsWindow() == False:
             pm.mel.unifiedRenderGlobalsWindow()
 
-
-
-        print 'test_set'
-
         mel.eval('loadNodePresets "test_pucca";')
         pm.setAttr("vraySettings.animBatchOnly", 1)
 
@@ -456,7 +452,7 @@ class randerForm(QtWidgets.QWidget):
             pm.mel.unifiedRenderGlobalsWindow()
 
 
-        print 'flnal_set'
+
         #colorManegment on
         if pm.colorManagementPrefs(q=True,cmEnabled=True) == False:
             pm.colorManagementPrefs(e=1, cmEnabled=1)
@@ -1362,27 +1358,27 @@ class randerForm(QtWidgets.QWidget):
         pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
         pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
-    def rad_sky(self):
-        print "rad_sky"
-        if pm.objExists('vraySettings'):
-            cacheDirC = "Y:/NPC/prod/03_lightingSet/ep00/light_set/timelight_set/radsky_light_set.ma"
-
-            mel.eval(
-                'file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" -options "v=0;"  -pr  -importFrameRate true  -importTimeRange "override" "%s";' % cacheDirC)
-
-            pm.editRenderLayerMembers('CH_color', 'daylight_set', noRecurse=1)
-
-
-
-            pm.editRenderLayerMembers('shadow', 'key_light', noRecurse=1)
-
-            pm.editRenderLayerMembers('BG_color', 'daylight_set', noRecurse=1)
-
-        self.start_fram = int(pm.playbackOptions(min=self.st))
-        self.end_fram = int(pm.playbackOptions(max=self.en))
-
-        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
-        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+    # def rad_sky(self):
+    #     print "rad_sky"
+    #     if pm.objExists('vraySettings'):
+    #         cacheDirC = "Y:/NPC/prod/03_lightingSet/ep00/light_set/timelight_set/radsky_light_set.ma"
+    #
+    #         mel.eval(
+    #             'file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" -options "v=0;"  -pr  -importFrameRate true  -importTimeRange "override" "%s";' % cacheDirC)
+    #
+    #         pm.editRenderLayerMembers('CH_color', 'daylight_set', noRecurse=1)
+    #
+    #
+    #
+    #         pm.editRenderLayerMembers('shadow', 'key_light', noRecurse=1)
+    #
+    #         pm.editRenderLayerMembers('BG_color', 'daylight_set', noRecurse=1)
+    #
+    #     self.start_fram = int(pm.playbackOptions(min=self.st))
+    #     self.end_fram = int(pm.playbackOptions(max=self.en))
+    #
+    #     pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+    #     pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
 
     def pushButton_18(self):
