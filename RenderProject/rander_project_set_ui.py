@@ -34,7 +34,9 @@ class randerForm(QtWidgets.QWidget):
     def __init__(self, parent = None ):
         QtWidgets.QWidget.__init__(self, parent=parent)
 
+        # self.setParent(mayaMainWindow)
         self.setWindowFlags(Qt.Dialog)
+
 
         self.ui = Rander_Form()
         self.ui.setupUi(self)
@@ -73,19 +75,22 @@ class randerForm(QtWidgets.QWidget):
         self.ui.unknownplugin.clicked.connect(self.UnknownPlugin_remove)
         self.ui.open.clicked.connect(self.open)
         self.ui.save_ma.clicked.connect(self.save_ma)
-        # self.ui.save_mb.clicked.connect(self.save_mb)
         self.ui.pushButton_16.clicked.connect(self.pushButton_16)
         self.ui.pushButton_17.clicked.connect(self.pushButton_17)
         self.ui.pushButton_18.clicked.connect(self.pushButton_18)
         self.ui.pushButton_19.clicked.connect(self.pushButton_19)
+        self.ui.rad_sky.clicked.connect(self.rad_sky)
         self.prefixPath = ("<Scene>/<Layer>")
-
 
         stA = cmds.playbackOptions(q=1, min=1)
         self.ui.lineEdit_2.setText(str(stA))
 
         edA = cmds.playbackOptions(q=1, max=1)
         self.ui.lineEdit_3.setText(str(edA))
+
+
+
+
 
 
     def SuverChange(self, index):
@@ -117,8 +122,12 @@ class randerForm(QtWidgets.QWidget):
                 # print file
                 # and file.startswith('$') == False:
                 if os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", file])) == True and file.startswith('$') == False:
-                    print file
+                   # print file
                     self.ui.comboBox_3.addItem(file)
+
+
+
+
 
 
 
@@ -134,7 +143,7 @@ class randerForm(QtWidgets.QWidget):
                 # print file
                 # and file.startswith('$') == False:
                 if os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod",file])) == True and file.startswith('$') == False:
-                    print file
+                    #print file
                     self.ui.comboBox_5.addItem(file)
 
 
@@ -150,14 +159,14 @@ class randerForm(QtWidgets.QWidget):
           self.ui.comboBox_3.clear()
 
           if self.ui.comboBox_5.currentText() == "04_lighting":
-              print 'yes'
+              #print 'yes'
               for file in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "04_lighting"])):
                   if os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "04_lighting",file])) == True and file.startswith('$') == False:
                       #     print file
                       self.ui.comboBox_3.addItem(file)
 
           if self.ui.comboBox_5.currentText() == "02_animation":
-              print 'yes'
+              #print 'yes'
               for file in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "02_animation"])):
                   if os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "02_animation",file])) == True and file.startswith('$') == False:
                       #     print file
@@ -186,7 +195,7 @@ class randerForm(QtWidgets.QWidget):
             for file in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText()])):
                 # print file
                 if self.ui.comboBox_3.currentText() == file:
-                    print "no"
+                    #print "no"
                     for file in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText()])):
 
                         if os.path.isdir(os.path.join('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText(),file]))) == True and file.startswith('$') == False:
@@ -325,6 +334,12 @@ class randerForm(QtWidgets.QWidget):
         print 'test_set'
 
         mel.eval('loadNodePresets "test_pucca";')
+        pm.setAttr("vraySettings.animBatchOnly", 1)
+
+        pm.setAttr("vraySettings.animType", 1)
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
         # if pm.objExists('vraySettings'):
         #     pm.setAttr("vraySettings.vfbOn", 1)
@@ -442,6 +457,9 @@ class randerForm(QtWidgets.QWidget):
 
 
         print 'flnal_set'
+        #colorManegment on
+        if pm.colorManagementPrefs(q=True,cmEnabled=True) == False:
+            pm.colorManagementPrefs(e=1, cmEnabled=1)
         mel.eval('loadNodePresets "final_pucca";')
         pm.setAttr("vraySettings.animType", 1)
         pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
@@ -602,6 +620,25 @@ class randerForm(QtWidgets.QWidget):
             print "Deleting ", nd
             pm.delete(nd)
 
+    def buttonClick12(self):
+        print "ffame set"
+        pm.setAttr("defaultRenderGlobals.currentRenderer", "vray", type="string")
+        pm.setAttr("vraySettings.animType", 1)
+        startenum = self.ui.lineEdit_2.text()
+
+        endenum = self.ui.lineEdit_3.text()
+
+        self.st = int(startenum)
+
+        self.en = int(endenum)
+
+        pm.playbackOptions(e=1, ast=self.st)
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        pm.playbackOptions(e=1, aet=self.en)
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
     def buttonClick7(self):
         pm.setAttr("defaultRenderGlobals.currentRenderer", "vray", type="string")
@@ -610,6 +647,16 @@ class randerForm(QtWidgets.QWidget):
             cacheDirB = "Y:/NPC/prod/03_lightingSet/ep00/light_set/timelight_set/Layer_set.ma"
 
             mel.eval('file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" -options "v=0;"  -pr  -importFrameRate true  -importTimeRange "override" "%s";' % cacheDirB)
+
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+
+
+
+
 
 
 
@@ -627,31 +674,36 @@ class randerForm(QtWidgets.QWidget):
 
         stA = cmds.playbackOptions(q=1, min=1)
         start = int(stA)
+        print start
 
         edA = cmds.playbackOptions(q=1, max=1)
         end = int(edA)
-        sel=cmds.ls(sl=1)[0]
+        print end
+        sel=cmds.ls(sl=1)[0].replace('|','A')
         print sel
         root = ""
         for name in cmds.ls(sl=1):
             root += " -root |" + str(name)
-            # print root
+            print root
         print 'dddd'
-        self.camerafile= '/'.join([self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera"])
+        self.camerafile= os.path.join(self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera")
         # if os.path.join(self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(),self.ui.comboBox_2.currentText(),"camera") == False:
         # os.makedirs(os.path.join(self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera"))
-        if os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera"])) == False:
+        if os.path.isdir(os.path.join(self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera")) == False:
             os.makedirs(self.camerafile)
-        elif os.path.isdir('/'.join([self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera"])) == True:
+
+        elif os.path.isdir(os.path.join(self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera")) == True:
             print 'exist'
 
 
         save_name = '/'.join([self.ui.comboBox.currentText(), "NPC", "post", "01_rendering", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText(),"camera", "%s.abc" % str(sel)])
-
-
-
         print save_name
+
+
+
+        # print save_name
         cmds.AbcExport(j="-frameRange %d %d -writeVisibility -writeUVSets -dataFormat ogawa  %s -file %s" % (start, end, root, save_name))
+
 
     def buttonClick10(self):
 
@@ -845,26 +897,26 @@ class randerForm(QtWidgets.QWidget):
 
 
 
-    def buttonClick12(self):
-        print "ffame set"
-        pm.setAttr("defaultRenderGlobals.currentRenderer", "vray", type="string")
-
-        startenum = self.ui.lineEdit_2.text()
-
-        endenum = self.ui.lineEdit_3.text()
-
-        st = int(startenum)
-
-        en = int(endenum)
-
-
-        pm.playbackOptions(e=1, ast=st)
-        self.start_fram=int(pm.playbackOptions(min=st))
-        pm.playbackOptions(e=1, aet=en)
-        self.end_fram=int(pm.playbackOptions(max=en))
-        pm.setAttr("vraySettings.animType", 1)
-        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
-        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+    # def buttonClick12(self):
+    #     print "ffame set"
+    #     pm.setAttr("defaultRenderGlobals.currentRenderer", "vray", type="string")
+    #     pm.setAttr("vraySettings.animType", 1)
+    #     startenum = self.ui.lineEdit_2.text()
+    #
+    #     endenum = self.ui.lineEdit_3.text()
+    #
+    #     st = int(startenum)
+    #
+    #     en = int(endenum)
+    #
+    #
+    #     pm.playbackOptions(e=1, ast=st)
+    #     self.start_fram=int(pm.playbackOptions(min=st))
+    #     pm.playbackOptions(e=1, aet=en)
+    #     self.end_fram=int(pm.playbackOptions(max=en))
+    #
+    #     pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+    #     pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
 
         # pm.playbackOptions(q=1, min=1)
@@ -1035,7 +1087,7 @@ class randerForm(QtWidgets.QWidget):
             for i in findplugin:
                 pm.unknownPlugin(i, remove=1)
         except:
-            pm.confirmDialog(b='지워졌어요!!!!', m='메세지:지웠음')
+            pm.confirmDialog( b='지워졌어요!!!!', m='메세지:지웠음')
 
 
 
@@ -1045,28 +1097,21 @@ class randerForm(QtWidgets.QWidget):
         openlist = []
         if self.ui.comboBox.currentText() == "Y:":
             ani_fn_file= '/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "02_animation", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
-            #print ani_fn_file
+            print ani_fn_file
             for file in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", "02_animation", self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])):
                 # print file
 
                 if 'fn' in file:
-                   #print file
-                    #print ani_fn_file + "/" + file
+                    print file
+                    print ani_fn_file + "/" + file
                     pm.cmds.file(str(ani_fn_file + "/" +file), ignoreVersion=1, typ="mayaAscii", options="v=0;", o=1, f=1)
                     pm.mel.addRecentFile(str(ani_fn_file + "/" +file), "mayaAscii")
-
-
-
-
-
 
     def save_ma(self):
         print 'save'
 
-        FOLDER_PATH = '/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(),
-                                self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
-        VOLDER_PATH = '/'.join(["V:", "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText(),
-                                self.ui.comboBox_2.currentText()])
+        FOLDER_PATH = '/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(),self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
+        VOLDER_PATH = '/'.join(["V:", "NPC", "prod", self.ui.comboBox_5.currentText(),self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
         print FOLDER_PATH
         print VOLDER_PATH
         # 파일 type 경로 알아내기
@@ -1112,6 +1157,9 @@ class randerForm(QtWidgets.QWidget):
                     if self.file in ex: continue
                     print file
 
+
+
+
                     # _v를 기준으로 앞에 이름 들고 오고 이름 바꾸기
                     baseName = self.file.rpartition('_v')[0].replace('ani_fn', 'lit')
                     print baseName
@@ -1123,7 +1171,7 @@ class randerForm(QtWidgets.QWidget):
                     #
                     # vircount리스트에 버전 숫자 담
                     virCount_list.append(virCount)
-                # # 제일 높은 숫자를 변수에 담기
+                #     # 제일 높은 숫자를 변수에 담기
                 maxNum = max(virCount_list)
                 print maxNum
                 # 네임에 _V를 붙이고 시퀀스 2자리로 맞추고 높은 숫자 와 1더하기 (파일이름 만들기)
@@ -1131,7 +1179,7 @@ class randerForm(QtWidgets.QWidget):
 
                 print self.newName
                 # 파일이름 리네임함 위에서
-                #
+        #
                 response = cmds.confirmDialog(title="Confirm",
                                               cancelButton="cencel",
                                               defaultButton="version_Overlay",
@@ -1141,239 +1189,40 @@ class randerForm(QtWidgets.QWidget):
                 if response == "version_Overlay":
                     print 'overlay'
                     print str(FOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'))
-                    cmds.file(rename=str(VOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'))) and cmds.file(
-                        save=1, type=fileKind[0])
+                    cmds.file(rename=str(VOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'))) and cmds.file(save=1, type=fileKind[0])
                     print 'V:_save'
-                    cmds.file(rename=str(FOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'))) and cmds.file(
-                        save=1, type=fileKind[0])
+                    cmds.file(rename=str(FOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'))) and cmds.file(save=1, type=fileKind[0])
                     print 'Y:_save'
 
 
 
 
+                    # pm.saveAs(FOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit'), f=True)
+
+                elif response == "version_up":
+                    print 'iii'
+                    # if pm.saveAs(FOLDER_PATH + '/' + newName + fileEnder) == True:
+                    #     pm.saveAs(VOLDER_PATH + '/' + newName + fileEnder)
+                    cmds.file(rename=str(VOLDER_PATH + '/' + self.newName + fileEnder)) and cmds.file(save=1, type=fileKind[0])
+                    print 'V:_save'
+
+                    cmds.file(rename=str(FOLDER_PATH + '/' + self.newName + fileEnder)) and cmds.file(save=1, type=fileKind[0])
+                    print 'Y:_save'
+
+
+
+                    # pm.saveAs(FOLDER_PATH + '/' + current_file.rpartition('_v')[0] + '_v01' + fileEnder, f=True)
+        if len(os.listdir(FOLDER_PATH)) <= 2:
+            print 'oooooooooooooo'
+            print current_file.replace('ani_fn', 'lit').rpartition('_v')[0] + '_v01' + fileEnder
+            cmds.file(rename=str(VOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit').rpartition('_v')[0] + '_v01' + fileEnder)) and cmds.file(save=1, type=fileKind[0])
+            print 'V:_save'
+            cmds.file(rename=str(FOLDER_PATH + '/' + current_file.replace('ani_fn', 'lit').rpartition('_v')[0] + '_v01' + fileEnder)) and cmds.file(save=1, type=fileKind[0])
+            print 'Y:_save'
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                    # self.scenes_name = pm.Env().sceneName().rpartition('/')[-1].rpartition('.')[0]
-        #
-        # # print self.scenes_name
-        #
-        #
-        # self.directorypath = '/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
-        #
-        # self.rename=self.directorypath + "/" + self.scenes_name
-        #
-        #
-        #
-        # self.rename_scence=self.rename.replace('_ani_fn_', '_lit_')
-        # #
-        # # print self.rename_scence
-        # #
-        # self.final_name=self.rename_scence[:-2] + self.ui.comboBox_4.currentText() + ".ma"
-        # #
-        # #print self.final_name
-        #
-        # if os.path.exists(self.final_name) == False:
-        #
-        #
-        #     pm.saveAs(self.final_name, f=True)
-        #
-        # if pm.window("memolist", exists=True):
-        #     pm.deleteUI("memolist")
-        #
-        # ram=pm.window("memolist",w=200, h=400)
-        #
-        # pm.columnLayout()
-        # cmds.rowColumnLayout(numberOfColumns=1)
-        # for File in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])):
-        #     #print File
-        #
-        #
-        #
-        #
-        #     pm.text(File)
-        # pm.showWindow(ram)
-        #
-        #
-        # self.verup=int(self.ui.comboBox_4.currentText()) + 01
-        #
-        #
-        # self.final_name_verup = self.rename_scence[:-1] + str(self.verup) + ".ma"
-        #
-        # response = pm.confirmDialog(title="Confirm",
-        #                             cancelButton="cencel",
-        #                             defaultButton="version_Overlay",
-        #                             button=["version_Overlay",
-        #                                     "cencel"],
-        #                             message="덮을래? 취소할래",
-        #                             dismissString="cencel")
-        # # create a confirm dialog with a yes and no button. Specif
-        # # check response
-        # if response == "version_Overlay":
-        #     print self.final_name
-        #     pm.saveAs(self.final_name, f=True)
-
-
-        # elif response == "cencel":
-        #     pass
-        #     # pm.saveAs(self.final_name, f=True)
-        #     def save_ma(self):
-        #         # print 'save'
-        #
-        #
-        #         self.scenes_name = pm.Env().sceneName().rpartition('/')[-1].rpartition('.')[0]
-        #
-        #         # print self.scenes_name
-        #
-        #
-        #         self.directorypath = '/'.join(
-        #             [self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(),
-        #              self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
-        #
-        #         self.rename = self.directorypath + "/" + self.scenes_name
-        #
-        #         self.rename_scence = self.rename.replace('_ani_fn_', '_lit_')
-        #         #
-        #         # print self.rename_scence
-        #         #
-        #         self.final_name = self.rename_scence[:-2] + self.ui.comboBox_4.currentText() + ".ma"
-        #         #
-        #         # print self.final_name
-        #
-        #         if os.path.exists(self.final_name) == False:
-        #             pass
-        #             # pm.saveAs(self.final_name, f=True)
-        #
-        #         pm.window(w=200, h=400)
-        #         pm.columnLayout()
-        #         cmds.rowColumnLayout(numberOfColumns=1)
-        #         for File in os.listdir('/'.join(
-        #                 [self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(),
-        #                  self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])):
-        #             # print File
-        #
-        #
-        #
-        #
-        #             pm.text(File)
-        #         pm.showWindow()
-        #
-        #         self.verup = int(self.ui.comboBox_4.currentText()) + 01
-        #
-        #         self.final_name_verup = self.rename_scence[:-1] + str(self.verup) + ".ma"
-        #
-        #         response = pm.confirmDialog(title="Confirm",
-        #                                     cancelButton="cencel",
-        #                                     defaultButton="version_Overlay",
-        #                                     button=["version_Overlay",
-        #                                             "cencel"],
-        #                                     message="덮을래? 취소할래",
-        #                                     dismissString="cencel")
-        #         # create a confirm dialog with a yes and no button. Specif
-        #         # check response
-        #         if response == "version_Overlay":
-        #             print self.final_name
-        #             # pm.saveAs(self.final_name, f=True)
-        #
-        #
-        #         elif response == "cencel":
-        #             pass
-
-
-    # def save_mb(self):
-    #     # print 'save'
-    #
-    #
-    #     self.scenes_name = pm.Env().sceneName().rpartition('/')[-1].rpartition('.')[0]
-    #
-    #     # print self.scenes_name
-    #
-    #
-    #     self.directorypath = '/'.join(
-    #         [self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(),
-    #          self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])
-    #
-    #     self.rename = self.directorypath + "/" + self.scenes_name
-    #
-    #     self.rename_scence = self.rename.replace('_ani_fn_', '_lit_')
-    #     #
-    #     # print self.rename_scence
-    #     #
-    #     self.final_name = self.rename_scence[:-2] + self.ui.comboBox_4.currentText() + ".mb"
-    #     #
-    #     # print self.final_name
-    #
-    #     if os.path.exists(self.final_name) == False:
-    #         pass
-    #         # pm.saveAs(self.final_name, f=True)
-    #
-    #     if pm.window("memolist", exists=True):
-    #         pm.deleteUI("memolist")
-    #
-    #     ram = pm.window("memolist", w=200, h=400)
-    #
-    #     pm.columnLayout()
-    #     cmds.rowColumnLayout(numberOfColumns=1)
-    #     for File in os.listdir('/'.join([self.ui.comboBox.currentText(), "NPC", "prod", self.ui.comboBox_5.currentText(), self.ui.comboBox_3.currentText(), self.ui.comboBox_2.currentText()])):
-    #         # print File
-    #
-    #
-    #
-    #
-    #         pm.text(File)
-    #     pm.showWindow(ram)
-    #
-    #     self.verup = int(self.ui.comboBox_4.currentText()) + 01
-    #
-    #     self.final_name_verup = self.rename_scence[:-1] + str(self.verup) + ".mb"
-    #
-    #     response = pm.confirmDialog(title="Confirm",
-    #                                 cancelButton="cencel",
-    #                                 defaultButton="version_Overlay",
-    #                                 button=["version_Overlay",
-    #                                         "cencel"],
-    #                                 message="덮을래? 취소할래",
-    #                                 dismissString="cencel")
-    #     # create a confirm dialog with a yes and no button. Specif
-    #     # check response
-    #     if response == "version_Overlay":
-    #         print self.final_name
-    #         pm.saveAs(self.final_name, f=True)
-    #
-    #
-    #     elif response == "cencel":
-    #         pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            # if self.final_name == True:
-        #     print "yes"
-
-        # pm.saveAs(final_name, f=True)
 
 
     def pushButton_16(self):
@@ -1492,6 +1341,7 @@ class randerForm(QtWidgets.QWidget):
                         pm.setAttr("BG_vrayobjectproperties.reflectionAmount", 0)
                         pm.setAttr("BG_vrayobjectproperties.refractionAmount", 0)
 
+
     def pushButton_17(self):
         print "outside"
         if pm.objExists('vraySettings'):
@@ -1500,13 +1350,39 @@ class randerForm(QtWidgets.QWidget):
 
             mel.eval('file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" -options "v=0;"  -pr  -importFrameRate true  -importTimeRange "override" "%s";' % cacheDirC)
 
-            pm.editRenderLayerMembers('CH_color', 'CH_rimlight', 'daylight_set', noRecurse=1)
-
-            pm.editRenderLayerMembers('CH_rim', 'CH_rimlight', noRecurse=1)
+            pm.editRenderLayerMembers('CH_color', 'daylight_set', noRecurse=1)
 
             pm.editRenderLayerMembers('shadow', 'key_light', noRecurse=1)
 
-            pm.editRenderLayerMembers('BG_color', 'daylight_set', 'CH_rimlight', noRecurse=1)
+            pm.editRenderLayerMembers('BG_color', 'daylight_set', noRecurse=1)
+
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+
+    def rad_sky(self):
+        print "rad_sky"
+        if pm.objExists('vraySettings'):
+            cacheDirC = "Y:/NPC/prod/03_lightingSet/ep00/light_set/timelight_set/radsky_light_set.ma"
+
+            mel.eval(
+                'file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" -options "v=0;"  -pr  -importFrameRate true  -importTimeRange "override" "%s";' % cacheDirC)
+
+            pm.editRenderLayerMembers('CH_color', 'daylight_set', noRecurse=1)
+
+
+
+            pm.editRenderLayerMembers('shadow', 'key_light', noRecurse=1)
+
+            pm.editRenderLayerMembers('BG_color', 'daylight_set', noRecurse=1)
+
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
 
     def pushButton_18(self):
@@ -1523,7 +1399,14 @@ class randerForm(QtWidgets.QWidget):
 
             pm.editRenderLayerMembers('shadow', 'center_light', 'sp_light', 'box_light', noRecurse=1)
 
-            pm.editRenderLayerMembers('CH_rim', 'CH_rimlight', noRecurse=1)
+
+
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+
 
     def pushButton_19(self):
         print "room"
@@ -1539,15 +1422,23 @@ class randerForm(QtWidgets.QWidget):
 
             pm.editRenderLayerMembers('shadow', 'fl_light', 'sp_light', noRecurse=1)
 
-            pm.editRenderLayerMembers('CH_rim', 'CH_rimlight', noRecurse=1)
 
 
-    def closeEvent(self, QCloseEvent):
-        print "close"
-        global form
-        form = None
+        self.start_fram = int(pm.playbackOptions(min=self.st))
+        self.end_fram = int(pm.playbackOptions(max=self.en))
+
+        pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
+        pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
 
 import sys
+
+# if __name__ == "__main__":
+#     app = QtWidgets.QApplication(sys.argv)
+#
+#     form = randerForm(None)
+#
+#     form.show()
+#     sys.exit(app.exec_())
 
 def standaloneMain():
     '''
@@ -1570,6 +1461,7 @@ def mayaMain():
     form = randerForm(getMayaWindow())
     form.show()
 
+<<<<<<< HEAD
 
 # MayaAction.py, HoudiniAction.py
 # def ImportAction():
@@ -1579,3 +1471,5 @@ def mayaMain():
 
 
 
+=======
+>>>>>>> 36825ea971ffc5d2c79a2cdd12bdd70acd47d378
