@@ -15,48 +15,48 @@ class Riging():
                     pm.separator(h=10, style='out')
                     with pm.rowColumnLayout(numberOfRows=2, rowHeight=((1, 30), (2, 30))):
                         pm.iconTextButton(style='iconAndTextVertical', image1='icons/Misty Rose.png',
-                                          command=lambda:self.colorselct(20))  # up1 #color:20
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Sky blue.png',
+                                          command='colorselct(20)')  # up1 #color:20
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Sky blue.png',
                                           command='colorselct(18)')  # down1 #color:18
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Brown.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Brown.png',
                                           command='colorselct(12)')  # up2 color:12
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dodger Blue.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dodger Blue.png',
                                           command='colorselct(29)')  # down2 #color:29
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/rad.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='rad.png',
                                           command='colorselct(13)')  # up3 #color:13
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/blue.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='blue.png',
                                           command='colorselct(6)')  # down3 #color:6
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/yellow.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='yellow.png',
                                           command='colorselct(22)')  # up4 #color:22
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dark blue.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dark blue.png',
                                           command='colorselct(5)')  # down4 #color:5
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/pink.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='pink.png',
                                           command='colorselct(9)')  # up5 #color:9
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dark Goldenrod.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dark Goldenrod.png',
                                           command='colorselct(24)')  # down5 color:24
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dark Violet.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dark Violet.png',
                                           command='colorselct(30)')  # up6 #color:30
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Alice Blue.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Alice Blue.png',
                                           command='colorselct(25)')  # down6 #color:25
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Indigo.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Indigo.png',
                                           command='colorselct(8)')  # up7 # color:8
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Bisque.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Bisque.png',
                                           command='colorselct(21)')  # down7 #color:21
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Aquamarine.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Aquamarine.png',
                                           command='colorselct(19)')  # up8 #color:19
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/White.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='White.png',
                                           command='colorselct(16)')  # down8 #color:16
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/lightgreen.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='lightgreen.png',
                                           command='colorselct(14)')  # up9 #color:14
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Gray.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Gray.png',
                                           command='colorselct(3)')  # down9 #color:3
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dark green.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dark green.png',
                                           command='colorselct(26)')  # up10 #color:26
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Dark Gray.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Dark Gray.png',
                                           command='colorselct(2)')  # down10 #color:2
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/Medium Sea Green.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='Medium Sea Green.png',
                                           command='colorselct(23)')  # up11 #color:23
-                        pm.iconTextButton(style='iconAndTextVertical', image1='icons/black.png',
+                        pm.iconTextButton(style='iconAndTextVertical', image1='black.png',
                                           command='colorselct(1)')  # down11 #color:1
                         pm.setParent('..')
                         with pm.columnLayout(adj=True):
@@ -65,9 +65,11 @@ class Riging():
                                 pm.separator(h=10, style='out')
                                 with pm.columnLayout(adj=True):
                                     pm.gridLayout(numberOfColumns=9, cellWidthHeight=(40, 40), width=300)
-                                    #icons of the "controllers"
-                                    pm.symbolButton(image='mz_icons/ccButton01.PNG',command='Ctrl_Create(A)')
-                                    pm.symbolButton(image='mz_icons/ccButton02.PNG')
+                                    # icons of the "controllers"
+                                    pm.symbolButton(image='mz_icons/ccButton01.PNG',
+                                                    command=lambda: self.Ctrl_Create(A=True))
+                                    pm.symbolButton(image='mz_icons/ccButton02.PNG',
+                                                    command=lambda: self.Ctrl_Create(B=True))
                                     pm.symbolButton(image='mz_icons/ccButton03.PNG')
                                     pm.symbolButton(image='mz_icons/ccButton04.PNG')
                                     pm.symbolButton(image='mz_icons/ccButton05.PNG')
@@ -137,18 +139,21 @@ class Riging():
             pm.setAttr('%s.overrideEnabled' % shape, 1)
             pm.setAttr('%s.overrideColor' % shape, number)
 
-    def Ctrl_Create(self, *args):
 
-        if args == 'A':
-            pm.circle(c=(0, 0, 0), nr=(0, 1, 0))
-        if args == 'B':
-            pm.curve(p=[(1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
-                   (1.011106, 1.011106, 1.011106), (1.011106, 1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
-                   (-1.011106, -1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
-                   (-1.011106, -1.011106, 1.011106), (-1.011106, -1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
-                   (1.011106, -1.011106, 1.011106), (1.011106, 1.011106, 1.011106), (-1.011106, 1.011106, 1.011106),
-                   (-1.011106, -1.011106, 1.011106), (1.011106, -1.011106, 1.011106)],
-                         k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], d=1)
+def Ctrl_Create(A=None, B=None):
+    if A == True:
+        pm.circle(c=(0, 0, 0), nr=(0, 1, 0))
+    if B == True:
+        pm.curve(p=[(1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
+                    (1.011106, 1.011106, 1.011106), (1.011106, 1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
+                    (-1.011106, -1.011106, -1.011106), (-1.011106, 1.011106, -1.011106),
+                    (-1.011106, 1.011106, 1.011106),
+                    (-1.011106, -1.011106, 1.011106), (-1.011106, -1.011106, -1.011106),
+                    (1.011106, -1.011106, -1.011106),
+                    (1.011106, -1.011106, 1.011106), (1.011106, 1.011106, 1.011106), (-1.011106, 1.011106, 1.011106),
+                    (-1.011106, -1.011106, 1.011106), (1.011106, -1.011106, 1.011106)],
+                 k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], d=1)
+
 
 
 
