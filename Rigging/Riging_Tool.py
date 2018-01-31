@@ -66,8 +66,10 @@ class Riging():
                                 with pm.columnLayout(adj=True):
                                     pm.gridLayout(numberOfColumns=9, cellWidthHeight=(40, 40), width=300)
                                     # icons of the "controllers"
-                                    pm.symbolButton(image='mz_icons/ccButton01.PNG')
-                                    pm.symbolButton(image='mz_icons/ccButton02.PNG')
+                                    pm.symbolButton(image='mz_icons/ccButton01.PNG',
+                                                    command=lambda: self.Ctrl_Create(A=True))
+                                    pm.symbolButton(image='mz_icons/ccButton02.PNG',
+                                                    command=lambda: self.Ctrl_Create(B=True))
                                     pm.symbolButton(image='mz_icons/ccButton03.PNG')
                                     pm.symbolButton(image='mz_icons/ccButton04.PNG')
                                     pm.symbolButton(image='mz_icons/ccButton05.PNG')
@@ -138,12 +140,19 @@ class Riging():
             pm.setAttr('%s.overrideColor' % shape, number)
 
 
-
-
-
-
-
-
+def Ctrl_Create(A=None, B=None):
+    if A == True:
+        pm.circle(c=(0, 0, 0), nr=(0, 1, 0))
+    if B == True:
+        pm.curve(p=[(1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
+                    (1.011106, 1.011106, 1.011106), (1.011106, 1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
+                    (-1.011106, -1.011106, -1.011106), (-1.011106, 1.011106, -1.011106),
+                    (-1.011106, 1.011106, 1.011106),
+                    (-1.011106, -1.011106, 1.011106), (-1.011106, -1.011106, -1.011106),
+                    (1.011106, -1.011106, -1.011106),
+                    (1.011106, -1.011106, 1.011106), (1.011106, 1.011106, 1.011106), (-1.011106, 1.011106, 1.011106),
+                    (-1.011106, -1.011106, 1.011106), (1.011106, -1.011106, 1.011106)],
+                 k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], d=1)
 
 
 
