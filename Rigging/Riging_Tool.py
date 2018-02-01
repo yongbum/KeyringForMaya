@@ -6,8 +6,11 @@ windowH = 800
 
 
 class Riging():
-    def __init__(self, parent=None):
-        self.sellist = []
+    def __init__(self):
+        self.number = int
+
+
+
 
         with pm.window(t=windowname, h=windowH, w=windowW):
             with pm.columnLayout(adj=True):
@@ -66,7 +69,7 @@ class Riging():
                                 with pm.columnLayout(adj=True):
                                     pm.gridLayout(numberOfColumns=9, cellWidthHeight=(40, 40), width=300)
                                     # icons of the "controllers"
-                                    pm.symbolButton(image='mz_icons/ccButton01.PNG', command='Ctrl_Create(A=True)')
+                                    pm.symbolButton(image='mz_icons/ccButton01.PNG', command='Ctrl_Create(1)')
                                     pm.symbolButton(image='mz_icons/ccButton02.PNG', command='Ctrl_Create(B=True)')
                                     pm.symbolButton(image='mz_icons/ccButton03.PNG')
                                     pm.symbolButton(image='mz_icons/ccButton04.PNG')
@@ -127,7 +130,7 @@ class Riging():
                                             with pm.columnLayout(adj=True):
                                                 pm.separator(h=10, style='out')
 
-    def colorselct(self, number):
+    def colorselct(self):
         SelectTarget = pm.ls(sl=1)
 
         for ctrl in SelectTarget:
@@ -137,22 +140,19 @@ class Riging():
             pm.setAttr('%s.overrideEnabled' % shape, 1)
             pm.setAttr('%s.overrideColor' % shape, self.number)
 
-    def Ctrl_Create(self, A=None, B=None):
 
+    def Ctrl_Create(self,A):
         if A == True:
             pm.circle(c=(0, 0, 0), nr=(0, 1, 0))
-        if B == True:
-            pm.curve(
-                p=[(1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
-                   (1.011106, 1.011106, 1.011106), (1.011106, 1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
-                   (-1.011106, -1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
-                   (-1.011106, -1.011106, 1.011106), (-1.011106, -1.011106, -1.011106),
-                   (1.011106, -1.011106, -1.011106),
-                   (1.011106, -1.011106, 1.011106), (1.011106, 1.011106, 1.011106), (-1.011106, 1.011106, 1.011106),
-                   (-1.011106, -1.011106, 1.011106), (1.011106, -1.011106, 1.011106)],
-                k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], d=1)
-
-
+        # if self.B == True:
+        #     pm.curve(p=[(1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
+        #            (1.011106, 1.011106, 1.011106), (1.011106, 1.011106, -1.011106), (1.011106, -1.011106, -1.011106),
+        #            (-1.011106, -1.011106, -1.011106), (-1.011106, 1.011106, -1.011106), (-1.011106, 1.011106, 1.011106),
+        #            (-1.011106, -1.011106, 1.011106), (-1.011106, -1.011106, -1.011106),
+        #            (1.011106, -1.011106, -1.011106),
+        #            (1.011106, -1.011106, 1.011106), (1.011106, 1.011106, 1.011106), (-1.011106, 1.011106, 1.011106),
+        #            (-1.011106, -1.011106, 1.011106), (1.011106, -1.011106, 1.011106)],
+        #         k=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], d=1)
 
 
 
