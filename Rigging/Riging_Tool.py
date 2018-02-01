@@ -1,6 +1,28 @@
 #coding:cp949
 import pymel.core as pm
 
+
+''''
+========================================================================================
+runcode
+import sys 
+sys.path.append('Q:굚yongbum굚PYTHON_PATH굚KeyringForMaya굚Rigging')
+import Riging_Tool
+reload(Riging_Tool)
+Riging_Tool.Riging()
+
+=======================================================================================
+
+질문입니다
+1.함수가  Create() 실행이 왜 안 될까요?
+2.class 안에서 인자 값을 넣고 이수값을 넣는 방법을 잘 모르겠습니다 
+3.혹시 iconTextButton 버튼과  symbolButton 버튼의 이벤트 발생하는 스크립트 방식이 다른가요?
+4.pymel로 했을때도 deleteUI를 해줘야되나요?  rundoe를 실행할때마다 ui가 닫히지 않고 유아이를 띄워서요
+
+===========================================================================================
+
+'''''
+
 windowname = 'RigingTool'
 windowW = 300
 windowH = 800
@@ -161,27 +183,6 @@ class Riging():
 
 
 
-
-
-''''
-========================================================================================
-runcode
-import sys 
-sys.path.append('Q:굚yongbum굚PYTHON_PATH굚KeyringForMaya굚Rigging')
-import Riging_Tool
-reload(Riging_Tool)
-Riging_Tool.Riging()
-
-=======================================================================================
-
-질문입니다
-1.함수가  Create() 실행이 왜 안 될까요?
-2.class 안에서 인자 값을 넣고 이수값을 넣는 방법을 잘 모르겠습니다 
-3.혹시 iconTextButton 버튼과  symbolButton 버튼의 이벤트 발생하는 스크립트 방식이 다른가요?
-
-===========================================================================================
-
-'''''
 
 
 
