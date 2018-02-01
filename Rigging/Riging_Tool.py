@@ -14,15 +14,26 @@ Riging_Tool.Riging()
 =======================================================================================
 
 질문입니다
-1.함수가  Create() 실행이 왜 안 될까요?
+1.함수가  Create() 실행이 왜 안 될까요? # Error: TypeError: file C:괦rogram Files괔utodesk괣aya2017괦ython굃ib굎ite-packages굋ymel굀nternal괽actories.py line 785: <lambda>() takes no arguments (1 given) #  인자값을 알수가 없다는 말인같은데요 해결방법을 모르겠어요 
+
 2.class 안에서 인자 값을 넣고 이수값을 넣는 방법을 잘 모르겠습니다 
 3.혹시 iconTextButton 버튼과  symbolButton 버튼의 이벤트 발생하는 스크립트 방식이 다른가요?
+
+
+import functools
+functools.partial(self.colorselct, A=True, B=None)
+Calback(A=True, B=None)
 4.pymel로 했을때도 deleteUI를 해줘야되나요?  rundoe를 실행할때마다 ui가 닫히지 않고 유아이를 띄워서요
+
+
 
 ===========================================================================================
 
 '''''
-
+try:
+    pm.deleteUI(windowname)
+except:
+    pass
 windowname = 'RigingTool'
 windowW = 300
 windowH = 800
@@ -32,8 +43,7 @@ class Riging():
     def __init__(self):
         pass
 
-
-        with pm.window(t=windowname, h=windowH, w=windowW):
+        with pm.window(windowname, t=windowname, h=windowH, w=windowW):
             with pm.columnLayout(adj=True):
                 with pm.frameLayout(label='Ctrl Color', backgroundColor=[0.4, 0.4, 0.4]):
                     pm.separator(h=10, style='out')
@@ -89,9 +99,11 @@ class Riging():
                             pm.separator(h=10, style='out')
                             with pm.columnLayout(adj=True):
                                 pm.gridLayout(numberOfColumns=9, cellWidthHeight=(40, 40), width=300)
-                                # icons of the "controllers"
-                                pm.symbolButton(image='mz_icons/ccButton01.PNG', command=lambda :self.colorselct(A=True))
-                                pm.symbolButton(image='mz_icons/ccButton02.PNG', command=lambda :self.colorselct(B=True))
+                                # icons of the "controllers"Calback(A=True, B=None)
+                                pm.symbolButton(image='mz_icons/ccButton01.PNG',
+                                                command=lambda *args: self.Create(A=True, B=True))
+                                pm.symbolButton(image='mz_icons/ccButton01.PNG', command=lambda *args:self.Create(A=True, B=True))
+                                pm.symbolButton(image='mz_icons/ccButton02.PNG', command=lambda *args:self.Create(A=True, B=None))
                                 pm.symbolButton(image='mz_icons/ccButton03.PNG')
                                 pm.symbolButton(image='mz_icons/ccButton04.PNG')
                                 pm.symbolButton(image='mz_icons/ccButton05.PNG')
@@ -162,7 +174,7 @@ class Riging():
             pm.setAttr('%s.overrideEnabled' % shape, 1)
             pm.setAttr('%s.overrideColor' % shape, number)
 
-    def Create(self, A=None, B=None):
+    def Create(self,A=None, B=None):
         #A가 True일때 Ctrl를 생성
         if A == True:
 
