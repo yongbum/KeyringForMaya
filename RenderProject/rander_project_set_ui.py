@@ -1,8 +1,6 @@
 #coding:cp949
 from render_ui import Rander_Form
 
-float
-
 
 try:
     from PySide2 import QtWidgets, QtCore
@@ -79,6 +77,7 @@ class randerForm(QtWidgets.QWidget):
         self.ui.pushButton_17.clicked.connect(self.pushButton_17)
         self.ui.pushButton_18.clicked.connect(self.pushButton_18)
         self.ui.pushButton_19.clicked.connect(self.pushButton_19)
+        self.ui.ID.clicked.connect(self.ID)
         # self.ui.rad_sky.clicked.connect(self.rad_sky)
         self.prefixPath = ("<Scene>/<Layer>")
 
@@ -1425,6 +1424,11 @@ class randerForm(QtWidgets.QWidget):
 
         pm.setAttr("defaultRenderGlobals.startFrame", self.start_fram)
         pm.setAttr("defaultRenderGlobals.endFrame", self.end_fram)
+
+
+
+    def ID(self):
+        print 'dddd'
 
 import sys
 
