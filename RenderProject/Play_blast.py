@@ -158,22 +158,14 @@ import sys
 #     sys.exit(app.exec_())
 
 def standaloneMain():
-    # '''
-    # 마야 말고 그냥 윈도우에서 띄울욚 쓰는 Qt 방식
-    # PyQt 쓸대
-    # :return:
-    # '''
+
     app = QtWidgets.QApplication(sys.argv)
     form = playblast_Form(None)
     form.show()
     sys.exit(app.exec_())
 
 def mayaMain():
-    # '''
-    # 마야에서 띄우고 싶을욚 쓰는 Qt방식
-    # PySide 쓸때
-    # :return:
-    # '''
+
     global form
     form = playblast_Form(getMayaWindow())
     form.show()
